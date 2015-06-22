@@ -151,6 +151,12 @@ class UIExplorerList extends React.Component {
 
   componentDidMount() {
     this._search(this.state.searchText);
+
+    UserDefaults.stringForKey('route')
+    .then(string => {
+      AlertIOS.alert(string);
+    });
+
   }
 
   render() {
