@@ -16,6 +16,8 @@
 'use strict';
 
 var React = require('react-native');
+var UserDefaults = require('react-native-userdefaults-ios');
+
 var {
   AppRegistry,
   ListView,
@@ -154,54 +156,28 @@ class UIExplorerList extends React.Component {
 
     UserDefaults.stringForKey('route')
     .then(string => {
-      AlertIOS.alert(string);
+      this.setState({route: string});
     });
-
   }
 
-  render() {
-    if (Platform.OS === 'ios' ||
-      (Platform.OS === 'android' && !this.props.isInDrawer)) {
-      var platformTextInputStyle =
-        Platform.OS === 'ios' ? styles.searchTextInputIOS :
-        Platform.OS === 'android' ? styles.searchTextInputAndroid : {};
-      var textInput = (
-        <View style={styles.searchRow}>
-          <TextInput
-            autoCapitalize="none"
-            autoCorrect={false}
-            clearButtonMode="always"
-            onChangeText={this._search.bind(this)}
-            placeholder="Search..."
-            style={[styles.searchTextInput, platformTextInputStyle]}
-            value={this.state.searchText}
-          />
-        </View>);
-    }
+render() {
+    if(!this.state.route){
+      return <View/>;
+    } else {
+      var route = decodeURI(this.state.route);
+      var component = COMPONENTS.find((component) => component.title === route);
 
-    var homePage;
-    if (Platform.OS === 'android' && this.props.isInDrawer) {
-      homePage = this._renderRow({
-        title: 'UIExplorer',
-        description: 'List of examples',
-      }, -1);
+      if (component) {
+        var Example = makeRenderable(component);
+        return (<Example/>);
+      } else {
+        return (
+          <View style={{flex:1, justifyContent: 'center'}}>
+            <Text style={{textAlign: 'center'}}>No Example Found</Text>
+          </View>
+        );
+      }
     }
-
-    return (
-      <View style={styles.listContainer}>
-        {textInput}
-        {homePage}
-        <ListView
-          style={styles.list}
-          dataSource={this.state.dataSource}
-          renderRow={this._renderRow.bind(this)}
-          renderSectionHeader={this._renderSectionHeader}
-          keyboardShouldPersistTaps={true}
-          automaticallyAdjustContentInsets={false}
-          keyboardDismissMode="on-drag"
-        />
-      </View>
-    );
   }
 
   _renderSectionHeader(data: any, section: string) {
