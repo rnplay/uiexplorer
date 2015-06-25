@@ -4,9 +4,5 @@
   "private": true,
   "scripts": {
     "start": "node_modules/react-native/packager/packager.sh"
-  },
-  "dependencies": {
-    "react-native": "facebook/react-native",
-    "react-native-userdefaults-ios": "0.1.2"
   }
 }
