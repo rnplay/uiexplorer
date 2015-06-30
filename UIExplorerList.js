@@ -30,6 +30,8 @@ var {
   View,
 } = React;
 
+var Platform = require("./Platform");
+
 var { TestModule } = React.addons;
 var Settings = require('Settings');
 
