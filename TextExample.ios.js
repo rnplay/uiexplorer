@@ -215,11 +215,6 @@ exports.examples = [
         <Text style={{textAlign: 'right'}}>
           right right right right right right right right right right right right right
         </Text>
-        <Text style={{textAlign: 'justify'}}>
-          justify: this text component's contents are laid out with "textAlign: justify"
-          and as you can see all of the lines except the last one span the
-          available width of the parent container.
-        </Text>
       </View>
     );
   },
@@ -305,17 +300,17 @@ exports.examples = [
   title: 'containerBackgroundColor attribute',
   render: function() {
     return (
-      <View style={{backgroundColor: 'yellow'}}>
-        <View style={{flexDirection: 'row', position: 'absolute', height: 80}}>
-          <View style={{backgroundColor: '#ffaaaa', width: 140}} />
-          <View style={{backgroundColor: '#aaaaff', width: 140}} />
+      <View>
+        <View style={{flexDirection: 'row', height: 85}}>
+          <View style={{backgroundColor: '#ffaaaa', width: 150}} />
+          <View style={{backgroundColor: '#aaaaff', width: 150}} />
         </View>
-        <Text style={styles.backgroundColorText}>
+        <Text style={[styles.backgroundColorText, {top: -80}]}>
           Default containerBackgroundColor (inherited) + backgroundColor wash
         </Text>
         <Text style={[
           styles.backgroundColorText,
-          {marginBottom: 5, containerBackgroundColor: 'transparent'}]}>
+          {top: -70, containerBackgroundColor: 'transparent'}]}>
           {"containerBackgroundColor: 'transparent' + backgroundColor wash"}
         </Text>
       </View>
@@ -327,13 +322,13 @@ exports.examples = [
     return (
       <View>
         <Text numberOfLines={1}>
-          Maximum of one line, no matter how much I write here. If I keep writing, it{"'"}ll just truncate after one line.
+          Maximum of one line no matter now much I write here. If I keep writing it{"'"}ll just truncate after one line
         </Text>
         <Text numberOfLines={2} style={{marginTop: 20}}>
-          Maximum of two lines, no matter how much I write here. If I keep writing, it{"'"}ll just truncate after two lines.
+          Maximum of two lines no matter now much I write here. If I keep writing it{"'"}ll just truncate after two lines
         </Text>
         <Text style={{marginTop: 20}}>
-          No maximum lines specified, no matter how much I write here. If I keep writing, it{"'"}ll just keep going and going.
+          No maximum lines specified no matter now much I write here. If I keep writing it{"'"}ll just keep going and going
         </Text>
       </View>
     );
@@ -342,8 +337,7 @@ exports.examples = [
 
 var styles = StyleSheet.create({
   backgroundColorText: {
-    margin: 5,
-    marginBottom: 0,
+    left: 5,
     backgroundColor: 'rgba(100, 100, 100, 0.3)'
   },
   entity: {

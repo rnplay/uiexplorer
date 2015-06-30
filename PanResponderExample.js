@@ -27,7 +27,7 @@ var CIRCLE_COLOR = 'blue';
 var CIRCLE_HIGHLIGHT_COLOR = 'green';
 
 
-var PanResponderExample = React.createClass({
+var NavigatorIOSExample = React.createClass({
 
   statics: {
     title: 'PanResponder Sample',
@@ -133,4 +133,4 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = PanResponderExample;
+module.exports = NavigatorIOSExample;

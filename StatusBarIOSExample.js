@@ -32,11 +32,11 @@ exports.examples = [{
   render() {
     return (
       <View>
-        {['default', 'light-content'].map((style) =>
+        {Object.keys(StatusBarIOS.Style).map((key) =>
           <TouchableHighlight style={styles.wrapper}
-            onPress={() => StatusBarIOS.setStyle(style)}>
+            onPress={() => StatusBarIOS.setStyle(StatusBarIOS.Style[key])}>
             <View style={styles.button}>
-              <Text>setStyle('{style}')</Text>
+              <Text>setStyle(StatusBarIOS.Style.{key})</Text>
             </View>
           </TouchableHighlight>
         )}
@@ -48,11 +48,11 @@ exports.examples = [{
   render() {
     return (
       <View>
-        {['default', 'light-content'].map((style) =>
+        {Object.keys(StatusBarIOS.Style).map((key) =>
           <TouchableHighlight style={styles.wrapper}
-            onPress={() => StatusBarIOS.setStyle(style, true)}>
+            onPress={() => StatusBarIOS.setStyle(StatusBarIOS.Style[key], true)}>
             <View style={styles.button}>
-              <Text>setStyle('{style}', true)</Text>
+              <Text>setStyle(StatusBarIOS.Style.{key}, true)</Text>
             </View>
           </TouchableHighlight>
         )}
@@ -64,18 +64,18 @@ exports.examples = [{
   render() {
     return (
       <View>
-        {['none', 'fade', 'slide'].map((animation) =>
+        {Object.keys(StatusBarIOS.Animation).map((key) =>
           <View>
             <TouchableHighlight style={styles.wrapper}
-              onPress={() => StatusBarIOS.setHidden(true, animation)}>
+              onPress={() => StatusBarIOS.setHidden(true, StatusBarIOS.Animation[key])}>
               <View style={styles.button}>
-                <Text>setHidden(true, '{animation}')</Text>
+                <Text>setHidden(true, StatusBarIOS.Animation.{key})</Text>
               </View>
             </TouchableHighlight>
             <TouchableHighlight style={styles.wrapper}
-              onPress={() => StatusBarIOS.setHidden(false, animation)}>
+              onPress={() => StatusBarIOS.setHidden(false, StatusBarIOS.Animation[key])}>
               <View style={styles.button}>
-                <Text>setHidden(false, '{animation}')</Text>
+                <Text>setHidden(false, StatusBarIOS.Animation.{key})</Text>
               </View>
             </TouchableHighlight>
           </View>

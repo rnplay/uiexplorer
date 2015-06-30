@@ -77,7 +77,13 @@ var styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
+  titleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: 'transparent',
+  },
   titleText: {
+    backgroundColor: 'transparent',
     fontSize: 14,
     fontWeight: '500',
   },
@@ -95,7 +101,8 @@ var styles = StyleSheet.create({
     height: 8,
   },
   children: {
-    margin: 10,
+    backgroundColor: 'transparent',
+    padding: 10,
   }
 });
 

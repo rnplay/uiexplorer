@@ -59,16 +59,6 @@ var propTypes = {
    * imagesPerRow: Number of images to be shown in each row.
    */
   imagesPerRow: React.PropTypes.number,
-
-   /**
-   * The asset type, one of 'Photos', 'Videos' or 'All'
-   */
-  assetType: React.PropTypes.oneOf([
-    'Photos',
-    'Videos',
-    'All',
-  ]),
-
 };
 
 var CameraRollView = React.createClass({
@@ -79,7 +69,6 @@ var CameraRollView = React.createClass({
       groupTypes: 'SavedPhotos',
       batchSize: 5,
       imagesPerRow: 1,
-      assetType: 'Photos',
       renderImage: function(asset) {
         var imageSize = 150;
         var imageStyle = [styles.image, {width: imageSize, height: imageSize}];
@@ -100,7 +89,6 @@ var CameraRollView = React.createClass({
       assets: ([]: Array<Image>),
       groupTypes: this.props.groupTypes,
       lastCursor: (null : ?string),
-      assetType: this.props.assetType,
       noMore: false,
       loadingMore: false,
       dataSource: ds,
@@ -136,8 +124,7 @@ var CameraRollView = React.createClass({
 
     var fetchParams: Object = {
       first: this.props.batchSize,
-      groupTypes: this.props.groupTypes,
-      assetType: this.props.assetType,
+      groupTypes: this.props.groupTypes
     };
     if (this.state.lastCursor) {
       fetchParams.after = this.state.lastCursor;

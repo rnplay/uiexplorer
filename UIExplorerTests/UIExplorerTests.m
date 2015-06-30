@@ -1,28 +1,50 @@
 /**
- * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
+ * The examples provided by Facebook are for non-commercial testing and
+ * evaluation purposes only.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * Facebook reserves all rights not expressly granted.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL
+ * FACEBOOK BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
+
+#import <RCTTest/RCTTestRunner.h>
 
 #import "RCTAssert.h"
 #import "RCTRedBox.h"
 #import "RCTRootView.h"
 
 #define TIMEOUT_SECONDS 240
-#define TEXT_TO_LOOK_FOR @"Welcome to React Native!"
 
 @interface UIExplorerTests : XCTestCase
+{
+  RCTTestRunner *_runner;
+}
 
 @end
 
 @implementation UIExplorerTests
 
+- (void)setUp
+{
+#ifdef __LP64__
+  RCTAssert(!__LP64__, @"Snapshot tests should be run on 32-bit device simulators (e.g. iPhone 5)");
+#endif
+  NSString *version = [[UIDevice currentDevice] systemVersion];
+  RCTAssert([version isEqualToString:@"8.1"], @"Snapshot tests should be run on iOS 8.1, found %@", version);
+  _runner = RCTInitRunnerForApp(@"Examples/UIExplorer/UIExplorerApp");
+
+  // If tests have changes, set recordMode = YES below and run the affected
+  // tests on an iPhone5, iOS 8.1 simulator.
+  _runner.recordMode = NO;
+}
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {
@@ -37,8 +59,11 @@
   return NO;
 }
 
-- (void)testRendersWelcomeScreen {
-  UIViewController *vc = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+// Make sure this test runs first because the other tests will tear out the rootView
+- (void)testAAA_RootViewLoadsAndRenders
+{
+  UIViewController *vc = [UIApplication sharedApplication].delegate.window.rootViewController;
+  RCTAssert([vc.view isKindOfClass:[RCTRootView class]], @"This test must run first.");
   NSDate *date = [NSDate dateWithTimeIntervalSinceNow:TIMEOUT_SECONDS];
   BOOL foundElement = NO;
   NSString *redboxError = nil;
@@ -48,11 +73,10 @@
     [[NSRunLoop mainRunLoop] runMode:NSRunLoopCommonModes beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
 
     redboxError = [[RCTRedBox sharedInstance] currentErrorMessage];
-
-    foundElement = [self findSubviewInView:vc.view matching:^BOOL(UIView *view) {
+    foundElement = [self findSubviewInView:vc.view matching:^(UIView *view) {
       if ([view respondsToSelector:@selector(attributedText)]) {
         NSString *text = [(id)view attributedText].string;
-        if ([text isEqualToString:TEXT_TO_LOOK_FOR]) {
+        if ([text isEqualToString:@"<View>"]) {
           return YES;
         }
       }
@@ -61,8 +85,27 @@
   }
 
   XCTAssertNil(redboxError, @"RedBox error: %@", redboxError);
-  XCTAssertTrue(foundElement, @"Cound't find element with text '%@' in %d seconds", TEXT_TO_LOOK_FOR, TIMEOUT_SECONDS);
+  XCTAssertTrue(foundElement, @"Cound't find element with '<View>' text in %d seconds", TIMEOUT_SECONDS);
 }
 
+#define RCT_SNAPSHOT_TEST(name, reRecord) \
+- (void)test##name##Snapshot              \
+{                                         \
+  _runner.recordMode |= reRecord;         \
+  [_runner runTest:_cmd module:@#name];   \
+}
+
+RCT_SNAPSHOT_TEST(ViewExample, NO)
+RCT_SNAPSHOT_TEST(LayoutExample, NO)
+RCT_SNAPSHOT_TEST(TextExample, NO)
+RCT_SNAPSHOT_TEST(SwitchExample, NO)
+RCT_SNAPSHOT_TEST(SliderExample, NO)
+RCT_SNAPSHOT_TEST(TabBarExample, NO)
+
+// Make sure this test runs last
+- (void)testZZZ_NotInRecordMode
+{
+  RCTAssert(_runner.recordMode == NO, @"Don't forget to turn record mode back to NO before commit.");
+}
 
 @end
