@@ -30,7 +30,7 @@ var {
   View,
 } = React;
 
-var Platform = require("./Platform");
+var Platform = require("./Platform.ios");
 
 var { TestModule } = React.addons;
 var Settings = require('Settings');
