@@ -146,7 +146,7 @@ class UIExplorerList extends React.Component {
       return <View/>;
     } else {
       var route = decodeURI(this.state.route);
-      var component = COMPONENTS.find((component) => component.title === route);
+      var component = COMPONENTS.concat(APIS).find((component) => component.title === route);
 
       if (component) {
         var Example = makeRenderable(component);
