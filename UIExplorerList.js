@@ -16,6 +16,8 @@
 'use strict';
 
 var React = require('react-native');
+var UserDefaults = require('react-native-userdefaults-ios');
+
 var {
   AppRegistry,
   ListView,
@@ -132,31 +134,31 @@ class UIExplorerList extends React.Component {
 
   componentDidMount() {
     this._search(this.state.searchText);
+
+    UserDefaults.stringForKey('route')
+    .then(string => {
+      this.setState({route: string});
+    });
   }
 
   render() {
-    return (
-      <View style={styles.listContainer}>
-        <View style={styles.searchRow}>
-          <TextInput
-            autoCapitalize="none"
-            autoCorrect={false}
-            clearButtonMode="always"
-            onChangeText={this._search.bind(this)}
-            placeholder="Search..."
-            style={styles.searchTextInput}
-            value={this.state.searchText}
-          />
-        </View>
-        <ListView
-          style={styles.list}
-          dataSource={this.state.dataSource}
-          renderRow={this._renderRow.bind(this)}
-          renderSectionHeader={this._renderSectionHeader}
-          automaticallyAdjustContentInsets={false}
-        />
-      </View>
-    );
+    if(!this.state.route){
+      return <View/>;
+    } else {
+      var route = decodeURI(this.state.route);
+      var component = COMPONENTS.find((component) => component.title === route);
+
+      if (component) {
+        var Example = makeRenderable(component);
+        return (<Example/>);
+      } else {
+        return (
+          <View style={{flex:1, justifyContent: 'center'}}>
+            <Text style={{textAlign: 'center'}}>No Example Found</Text>
+          </View>
+        );
+      }
+    }
   }
 
   _renderSectionHeader(data: any, section: string) {

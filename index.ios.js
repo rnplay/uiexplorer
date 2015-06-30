@@ -33,32 +33,7 @@ var UIExplorerApp = React.createClass({
   },
 
   render: function() {
-    if (this.state.openExternalExample) {
-      var Example = this.state.openExternalExample;
-      return (
-        <Example
-          onExampleExit={() => {
-            this.setState({ openExternalExample: null, });
-          }}
-        />
-      );
-    }
-    return (
-      <NavigatorIOS
-        style={styles.container}
-        initialRoute={{
-          title: 'UIExplorer',
-          component: UIExplorerList,
-          passProps: {
-            onExternalExampleRequested: (example) => {
-              this.setState({ openExternalExample: example, });
-            },
-          }
-        }}
-        itemWrapperStyle={styles.itemWrapper}
-        tintColor='#008888'
-      />
-    );
+     return <UIExplorerList/>;
   }
 });
 
